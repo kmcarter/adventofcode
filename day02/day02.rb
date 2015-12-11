@@ -10,3 +10,11 @@ packages.each do |package|
   end
 end
 p paper
+
+#part 2
+ribbon = 0
+packages.each do |package|
+  ribbon += package.first + package.first + package[1] + package[1]
+  ribbon += package.reduce(:*)
+end
+p ribbon
