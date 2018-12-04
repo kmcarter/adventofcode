@@ -75,4 +75,25 @@ minute_totals.each_with_index do |val,i|
     end
 end
 p "Sleepiest minute: #{sleepiest_minute} (asleep for #{sleepiest_minute_val} shifts)"
-p "Sleepy checksum: #{sleepiest_guard.to_i * sleepiest_minute.to_i}"
+p "Strat 1 sleepy checksum: #{sleepiest_guard.to_i * sleepiest_minute.to_i}"
+
+#part 2
+sleepiest_guard = nil
+sleepiest_minute = 0
+sleepiest_minute_val = 0
+guards.each do |guard,shifts|
+    minute_totals = []
+    (0..59).each{ |minute| minute_totals[minute] = 0 }
+    (0..59).each do |minute|
+        shifts.each { |day,log| minute_totals[minute] += 1 if log[minute] }
+    end
+    minute_totals.each_with_index do |val,i|
+        if val > sleepiest_minute_val
+            sleepiest_minute = i
+            sleepiest_minute_val = val
+            sleepiest_guard = guard
+        end
+    end
+end
+p "Strat 2: Guard ##{sleepiest_guard} was asleep #{sleepiest_minute_val} times on minute #{sleepiest_minute}"
+p "Strat 2 sleepy checksum: #{sleepiest_guard.to_i * sleepiest_minute.to_i}"
