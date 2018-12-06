@@ -79,11 +79,12 @@ infinite_coord_ids.flatten!.uniq!.delete(".")
 infinite_coord_ids.delete("x")
 #p infinite_coord_ids
 
-infinite_coord_ids.each { |i| coords[i] = nil }
+eligible_coords = Array.new(coords)
+infinite_coord_ids.each { |i| eligible_coords[i] = nil }
 #p coords
 
 coords_with_total_area = {}
-coords.each_with_index do |coord, i|
+eligible_coords.each_with_index do |coord, i|
     squares = 1 #start at one, b/c the coord itself counts as a square
     if coord != nil
         map.each do |row|
@@ -97,3 +98,18 @@ end
 p coords_with_total_area
 
 p "Largest size = #{coords_with_total_area.values.max}"
+
+#part 2
+region_size = 0
+map.each_with_index do |row,r|
+    row.each_with_index do |cell,c|
+        distance = 0
+        coords.each do |coord|
+            distance += (coord[0] - r).abs + (coord[1] - c).abs
+        end
+        
+        region_size += 1 if distance < 10000
+    end
+end
+
+p region_size
