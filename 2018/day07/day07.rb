@@ -35,8 +35,12 @@ def find_step_order(unique_steps, step_prereqs, prereqs, step_order)
 end
 
 step_order = []
-while step_order.length <= step_prereqs.keys.length
+loop do
     p "Step order so far: #{step_order.join}"
     find_step_order(unique_steps, step_prereqs, prereqs, step_order)
+
+    if step_order.length == unique_steps.length
+        break
+    end
 end
 p "Final step order: #{step_order.join}"
