@@ -12,4 +12,5 @@ root = tree.read_node
 
 p root.sum_metadata
 
+#part 2
 p root.get_value

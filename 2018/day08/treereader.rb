@@ -14,7 +14,6 @@ class TreeReader
 
         if num_children > 0
             (1..num_children).each do |i|
-                #p "In child array.new loop"
                 node.add_child(read_node)
             end
         end
@@ -24,7 +23,6 @@ class TreeReader
                 @index += 1
             end
         end
-        #p "Node complete, children = #{children}, metadata = #{metadata}"
         return node
     end
 end

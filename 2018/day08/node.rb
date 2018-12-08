@@ -15,14 +15,14 @@ class Node
                 end
             end
         end
-        value
+        return value
     end
 
     def sum_metadata
         sum = 0
         @metadata.each {|num| sum += num }
         @children.each {|child| sum += child.sum_metadata }
-        sum
+        return sum
     end
 
     def add_child(child)
