@@ -11,3 +11,5 @@ tree = TreeReader.new(input)
 root = tree.read_node
 
 p root.sum_metadata
+
+p root.get_value
