@@ -1,13 +1,11 @@
 require "./game.rb"
 require "./player.rb"
 
-input = File.open("example.txt").read.split(" ")
-num_players = input[0].to_i
-last_marble_points = input[6].to_i
+num_players = 10
+last_marble = 1618
 
-game = MarbleGame.new
-p game.take_turn
-p game.take_turn
-p game.take_turn
-p game.take_turn
-p game.take_turn
+game = MarbleGame.new(num_players, last_marble)
+
+game.play
+winner = game.players.max_by { |player| player.get_score }
+p "Player #{winner.id} won with score of #{winner.get_score}"
