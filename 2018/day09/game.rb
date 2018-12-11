@@ -3,7 +3,7 @@ class MarbleGame
         @last_marble = last_marble
         @circle = [0]
         @players = []
-        (0..num_players).each { |id| @players << Player.new(id) }
+        (0..num_players-1).each { |id| @players << Player.new(id) }
     end
 
     def play
@@ -17,7 +17,6 @@ class MarbleGame
     end
 
     def take_turn(marble)
-        #p "#{@circle.join(" ")} -->"
         if marble % 23 == 0
             @circle.rotate!(-7)
             removed = @circle.shift
@@ -26,6 +25,6 @@ class MarbleGame
             @circle.rotate!(2)
             @circle.insert(0, marble)
         end
-        #p @circle.join(" ")
+        #p "[#{marble % @players.length}] #{@circle.join(" ")}"
     end
 end
