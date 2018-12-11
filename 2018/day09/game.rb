@@ -20,8 +20,8 @@ class MarbleGame
         #p "#{@circle.join(" ")} -->"
         if marble % 23 == 0
             @circle.rotate!(-7)
-            @players[marble % @players.length].score(marble + @circle[0])
-            @circle.slice!(0,1)
+            removed = @circle.shift
+            @players[marble % @players.length].score(marble + removed)
         else
             @circle.rotate!(2)
             @circle.insert(0, marble)
