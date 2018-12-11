@@ -13,29 +13,28 @@ end
 #p "Fuel level 2: #{fuel_level(217, 196, 39)}"
 #p "Fuel level 3: #{fuel_level(101, 153, 71)}"
 
-grid = Array.new(298, Array.new(298, 0))
 largest_coord = nil
 largest_fuel = 0
+largest_grid_size = 0
 
-grid.each_with_index do |row, r|
-    row.each_with_index do |cell, c|
-        #UGLY
-        total_fuel = fuel_level(r, c, serial_num)
-        total_fuel += fuel_level(r + 1, c, serial_num)
-        total_fuel += fuel_level(r + 2, c, serial_num)
-        total_fuel += fuel_level(r, c + 1, serial_num)
-        total_fuel += fuel_level(r, c + 2, serial_num)
-        total_fuel += fuel_level(r + 1, c + 1, serial_num)
-        total_fuel += fuel_level(r + 2, c + 1, serial_num)
-        total_fuel += fuel_level(r + 1, c + 2, serial_num)
-        total_fuel += fuel_level(r + 2, c + 2, serial_num)
-        grid[r][c] = total_fuel
+(0..300).each_with_index do |row, r|
+    (0..300).each_with_index do |cell, c|
+        (4..20).each do |grid_size|
+            break if r + grid_size > 300 || c + grid_size > 300
 
-        if total_fuel > largest_fuel
-            largest_fuel = total_fuel
-            largest_coord = [r, c]
+            total_fuel = 0
+            (r..r+grid_size).each do |r_|
+                (c..c+grid_size).each { |c_| total_fuel += fuel_level(r_, c_, serial_num) }
+            end
+
+            if total_fuel > largest_fuel
+                largest_fuel = total_fuel
+                largest_coord = [r, c]
+                largest_grid_size = grid_size + 1
+                p "Largest so far: #{largest_coord}, size #{largest_grid_size}, fuel #{largest_fuel}"
+            end
         end
     end
 end
 
-p "Coord #{largest_coord} has most fuel (#{largest_fuel})"
+p "Coord #{largest_coord} with grid size #{largest_grid_size} has most fuel (#{largest_fuel})"
