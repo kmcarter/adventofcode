@@ -3,13 +3,12 @@ class MarbleGame
         @last_marble = last_marble
         @circle = [0]
         @players = []
-        (0..num_players).each { |id| @players << Player.new(id+1) }
+        (0..num_players).each { |id| @players << Player.new(id) }
     end
 
     def play
-        (1..@last_marble).each do |i|
-            take_turn(i, @players[0])
-            @players.rotate!(1)
+        (1..@last_marble+1).each do |i|
+            take_turn(i)
         end
     end
 
@@ -17,18 +16,16 @@ class MarbleGame
         @players
     end
 
-    def take_turn(marble, player)
+    def take_turn(marble)
+        #p "#{@circle.join(" ")} -->"
         if marble % 23 == 0
             @circle.rotate!(-7)
-            #p @circle.join(" ")
-            player.score(marble + @circle[0])
+            @players[marble % @players.length].score(marble + @circle[0])
             @circle.slice!(0,1)
-        elsif @circle.length > 0
-            #p "#{@circle.join(" ")} -->"
+        else
             @circle.rotate!(2)
             @circle.insert(0, marble)
-        else
-            @circle << marble
         end
+        #p @circle.join(" ")
     end
 end

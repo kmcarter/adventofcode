@@ -1,8 +1,8 @@
 require "./game.rb"
 require "./player.rb"
 
-num_players = 10
-last_marble = 1618
+num_players = 17
+last_marble = 1104
 
 game = MarbleGame.new(num_players, last_marble)
 
