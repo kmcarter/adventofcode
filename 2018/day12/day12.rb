@@ -46,6 +46,7 @@ generations.last.each do |i, plant|
     sum_1000_gens += i if plant == "#"
 end
 
+#part 2
 p "Sum after 1000 generations: #{sum_1000_gens}"
 p "Sum after 2000 generations: 106466"
 p "Sum after 3000 generations: 159466"
