@@ -22,7 +22,7 @@ def pad_plants(generation)
     generation
 end
 
-(0..19).each do |gen_i|
+(0..999).each do |gen_i|
     next_gen = []
     gen = pad_plants(generations.last)
     #p "gen #{gen_i} = #{gen}"
@@ -38,12 +38,16 @@ end
     generations << next_gen
     #p "next #{gen_i+1} = #{next_gen.join}"
 end
-p generations.last
 
-generations.each_with_index { |gen, i| p "[#{i}] #{gen.map{ |x,y| y }.join}" }
+#generations.each_with_index { |gen, i| p "[#{i}] #{gen.map{ |x,y| y }.join}" }
 
-sum = 0
+sum_1000_gens = 0
 generations.last.each do |i, plant|
-    sum += i if plant == "#"
+    sum_1000_gens += i if plant == "#"
 end
-p sum
+
+p "Sum after 1000 generations: #{sum_1000_gens}"
+p "Sum after 2000 generations: 106466"
+p "Sum after 3000 generations: 159466"
+p "Pattern is 53 * g + 466 where g is num of generations"
+p "Total after 50 billion generations: 53 * g + 466 = #{53 * 50000000000 + 466}"
