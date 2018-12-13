@@ -16,19 +16,14 @@ class Cart
         old_location = @location
         @direction = determine_direction(next_tile)
         @location = next_location
-        #p "Cart ##{@id} went from #{old_location} heading #{old_direction} to #{@location} heading #{@direction}"
+        p "Cart ##{@id} went from #{old_location} heading #{old_direction} to #{@location} heading #{@direction}"
     end
 
     def determine_next_location
-        if @direction == :left
-            next_location = [ @location[0] - 1, @location[1] ]
-        elsif @direction == :right
-            next_location = [ @location[0] + 1, @location[1] ]
-        elsif @direction == :up
-            next_location = [ @location[0], @location[1] - 1 ]
-        elsif @direction == :down
-            next_location = [ @location[0], @location[1] + 1 ]
-        end
+        return [ @location[0] - 1, @location[1] ] if @direction == :left
+        return [ @location[0] + 1, @location[1] ] if @direction == :right
+        return [ @location[0], @location[1] - 1 ] if @direction == :up
+        return [ @location[0], @location[1] + 1 ] if @direction == :down
     end
 
     private
@@ -36,40 +31,19 @@ class Cart
         next_tile = convert_intersection if next_tile == :intersection
         
         if @direction == :left
-            if next_tile == :left_curve
-                return :up
-            elsif next_tile == :right_curve
-                return :down
-            else
-                return @direction
-            end
+            return :up if next_tile == :left_curve
+            return :down if next_tile == :right_curve
         elsif @direction == :right
-            if next_tile == :left_curve
-                return :down
-            elsif next_tile == :right_curve
-                return :up
-            else
-                return @direction
-            end
+            return :down if next_tile == :left_curve
+            return :up if next_tile == :right_curve
         elsif @direction == :up
-            if next_tile == :left_curve
-                return :left
-            elsif next_tile == :right_curve
-                return :right
-            else
-                return @direction
-            end
+            return :left if next_tile == :left_curve
+            return :right if next_tile == :right_curve
         elsif @direction == :down
-            if next_tile == :left_curve
-                return :right
-            elsif next_tile == :right_curve
-                return :left
-            else
-                return @direction
-            end
-        else
-            return @direction
+            return :right if next_tile == :left_curve
+            return :left if next_tile == :right_curve
         end
+        return @direction
     end
 
     private
@@ -77,24 +51,14 @@ class Cart
         decision = @intersection_dirs[@num_turns % 3]
         @num_turns += 1
 
-        if decision == :right
-            if @direction == :right || @direction == :left
-                return :left_curve
-            else
-                return :right_curve
-            end
-        elsif decision == :left
-            if @direction == :right || @direction == :left
-                return :right_curve
-            else
-                return :left_curve
-            end
+        if @direction == :right || @direction == :left
+            return :left_curve if decision == :right
+            return :right_curve if decision == :left
+            return :straight_horz
         else
-            if @direction == :right || @direction == :left
-                return :straight_horz
-            else
-                return :straight_vert
-            end
+            return :right_curve if decision == :right
+            return :left_curve if decision == :left
+            return :straight_vert
         end
     end
 

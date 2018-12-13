@@ -3,27 +3,16 @@ require "./cart.rb"
 #part 1
 
 def tile_to_sym(tile)
-    if tile == "<"
-        return :left
-    elsif tile == ">"
-        return :right
-    elsif tile == "^"
-        return :up
-    elsif tile == "v"
-        return :down
-    elsif tile == "-"
-        return :straight_horz
-    elsif tile == "|"
-        return :straight_vert
-    elsif tile == "\\"
-        return :left_curve
-    elsif tile == "/"
-        return :right_curve
-    elsif tile == "+"
-        return :intersection
-    else
-        return tile
-    end
+    return :left if tile == "<"
+    return :right if tile == ">"
+    return :up if tile == "^"
+    return :down if tile == "v"
+    return :straight_horz if tile == "-"
+    return :straight_vert if tile == "|"
+    return :left_curve if tile == "\\"
+    return :right_curve if tile == "/"
+    return :intersection if tile == "+"
+    return tile
 end
 
 map = File.open("input.txt").read.split("\n")
@@ -44,7 +33,7 @@ map.each_with_index do |line, y|
 end
 
 map.each { |line| p line.join }
-#p carts
+p carts
 
 ticks = 0
 loop do
