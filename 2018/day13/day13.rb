@@ -33,17 +33,18 @@ map.each_with_index do |line, y|
 end
 
 map.each { |line| p line.join }
-p carts
+carts.each { |cart| p cart }
 
 ticks = 0
 loop do
     crashed_cart = []
-    #p "============ Tick ##{ticks} ============"
+    p "============ Tick ##{ticks} ============"
     carts.each do |cart|
         next_location = cart.determine_next_location
         cart.tick(tile_to_sym(map[next_location[1]][next_location[0]]), next_location)
         crashed_cart = carts.select {|c| cart.id > c.id && cart.location == c.location}
         ticks += 1
+        p cart
     end
     if crashed_cart.length > 0
         p "Carts crashed at #{crashed_cart[0].location}!"

@@ -2,12 +2,12 @@ class Cart
     attr_reader :id
     attr_reader :location
     attr_reader :direction
+    INTERSECTION_DIRS = [ :left, :straight, :right ]
 
     def initialize(id, location, direction)
         @id = id
         @location = location
         @direction = direction
-        @intersection_dirs = [ :left, :straight, :right ]
         @num_turns = 0
     end
 
@@ -16,7 +16,7 @@ class Cart
         old_location = @location
         @direction = determine_direction(next_tile)
         @location = next_location
-        p "Cart ##{@id} went from #{old_location} heading #{old_direction} to #{@location} heading #{@direction}"
+        #p "Cart ##{@id} went from #{old_location} heading #{old_direction} to #{@location} heading #{@direction}"
     end
 
     def determine_next_location
@@ -48,7 +48,7 @@ class Cart
 
     private
     def convert_intersection
-        decision = @intersection_dirs[@num_turns % 3]
+        decision = INTERSECTION_DIRS[@num_turns % 3]
         @num_turns += 1
 
         if @direction == :right || @direction == :left
@@ -60,8 +60,5 @@ class Cart
             return :left_curve if decision == :left
             return :straight_vert
         end
-    end
-
-    def will_collide?
     end
 end
