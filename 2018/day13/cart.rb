@@ -3,12 +3,14 @@ class Cart
     attr_reader :location
     attr_reader :direction
     attr_accessor :num_turns
+    attr_accessor :crashed
 
     def initialize(id, location, direction)
         @id = id
         @location = location
         @direction = direction
         @num_turns = 0
+        @crashed = false
     end
 
     def tick(next_tile, next_location)

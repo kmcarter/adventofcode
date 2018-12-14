@@ -34,7 +34,7 @@ class Track
         #(0..10).each do |ticks|
             crashed_carts = []
             @carts.sort! {|a,b| a.location <=> b.location}
-            p @carts
+            
             #p "============ Tick ##{ticks} ============"
             @carts.each do |cart|
                 next_location = cart.determine_next_location
@@ -60,8 +60,42 @@ class Track
         end
     end
 
-    def determine_cart_order
-        carts.sort
+    def crash_carts
+        ticks = 0
+        loop do
+        #(0..10).each do |ticks|
+            crashed_carts = []
+            @carts.select!{|c| !c.crashed }
+            @carts.sort! {|a,b| a.location <=> b.location}
+            
+            if @carts.length == 1
+                break
+            end
+
+            #p "============ Tick ##{ticks} ============"
+            @carts.each do |cart|
+                next_location = cart.determine_next_location
+                #p "Current location = #{cart.location} --> #{next_location}"
+                next_tile = Track.tile_to_sym(@map[next_location[1]][next_location[0]])
+                if next_tile == :intersection
+                    next_tile = convert_intersection(cart.num_turns, cart.direction)
+                    cart.num_turns += 1
+                end
+                cart.tick(next_tile, next_location)
+                #p "After moving: #{cart.location}"
+
+                crashed_carts = detect_collision(cart.location)
+                if crashed_carts.length > 1
+                    print
+                    p "Carts crashed at #{crashed_carts[0].location}!"
+                    crashed_carts.each { |cart| cart.crashed = true }
+                end
+
+                ticks += 1
+                p cart
+            end
+            #print
+        end
     end
 
     def detect_collision(location)

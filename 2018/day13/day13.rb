@@ -6,7 +6,7 @@ input = File.open("input.txt").read
 
 track = Track.new(input)
 track.print
-track.push_carts
+track.crash_carts
 
-#track.carts.each { |cart| p cart }
+track.carts.each { |cart| p cart }
 #p carts
