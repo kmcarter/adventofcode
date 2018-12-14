@@ -13,7 +13,8 @@ def round(elves, scoreboard)
         recipe_sum += score.value
         #p "Elf ##{i} chose recipe with value #{score.value}"
     end
-    recipe_sum.to_s.chars.each { |c| scoreboard.append(c.to_i) }
+    new_scores = recipe_sum.to_s.chars.to_a
+    new_scores.each { |c| scoreboard.append(c.to_i) }
     #p "Scoreboard: #{scoreboard}"
     elves.map! do |score|
         new_node = score
@@ -21,7 +22,7 @@ def round(elves, scoreboard)
         new_node
     end
     #p "Elves: #{elves}"
-    recipe_sum.to_s
+    new_scores
 end
 
 def part1(elves, scoreboard, num_recipes)
@@ -44,15 +45,23 @@ end
 def part2(elves, scoreboard, search_term)
     search_term = search_term.to_s
     last5digits = ""
+    iterations = 0
+    found_it = false
     loop do
-        new_vals = round(elves, scoreboard)
-        last5digits += new_vals
-        last5digits = last5digits.slice(-search_term.length, search_term.length) if last5digits.length > search_term.length
+        new_scores = round(elves, scoreboard)
+        new_scores.each_with_index do |score, i|
+            last5digits += score
+            last5digits = last5digits.slice(-search_term.length, search_term.length) if last5digits.length > search_term.length
 
-        if last5digits == search_term
-            p "Part 2: #{scoreboard.length - search_term.length}"
-            break
+            #p "#{last5digits} =? #{search_term} (iteration ##{iterations})"
+            if last5digits == search_term
+                p "Part 2: #{scoreboard.length - search_term.length - new_scores.length + i.succ} (took #{iterations} rounds)"
+                found_it = true
+                break
+            end
         end
+        iterations += 1
+        break if found_it
     end
 end
 
