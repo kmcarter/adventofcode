@@ -6,13 +6,22 @@ class CombatSimulator
     def initialize(input)
         @map = Environment.new(input)
         @units = initialize_units
-        @map.reset_map
         
         @map.print
     end
 
     def play
-        @units[0].take_turn
+        goblins = get_unit_locations(:goblin)
+        elves = get_unit_locations(:elf)
+        @units[0].take_turn(@units[0].type == :elf ? goblins : elves)
+    end
+
+    def get_unit_locations(type)
+        locations = []
+        @units.each do |unit|
+            locations << unit.location if unit.type == type
+        end
+        locations
     end
 
     private
