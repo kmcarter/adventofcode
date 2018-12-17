@@ -22,7 +22,7 @@ class Calculator
 
     def addi(registers, inst)
         result = Marshal.load(Marshal.dump(registers))
-        p "addi stores into register C (idx #{inst[3]}) the result (#{registers[inst[1]] + inst[2]}) of adding register A (which has a value of #{registers[inst[1]]}) and value B (#{inst[2]})"
+        #p "addi stores into register C (idx #{inst[3]}) the result (#{registers[inst[1]] + inst[2]}) of adding register A (which has a value of #{registers[inst[1]]}) and value B (#{inst[2]})"
         result[inst[3]] = registers[inst[1]] + inst[2]
         result
     end
@@ -35,8 +35,8 @@ class Calculator
 
     def muli(registers, inst)
         result = Marshal.load(Marshal.dump(registers))
-        registers[inst[3]] = registers[inst[1]] * inst[2]
-        registers
+        result[inst[3]] = registers[inst[1]] * inst[2]
+        result
     end
 
     def banr(registers, inst)

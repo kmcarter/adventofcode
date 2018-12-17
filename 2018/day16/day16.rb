@@ -7,6 +7,8 @@ input.map! do |block|
     block.split("\n")
 end
 
+calc = Calculator.new
+
 valid_blocks = 0
 input.each do |block|
     registers = YAML.load(block[0].split(": ")[1])
@@ -16,8 +18,7 @@ input.each do |block|
     p instructions
     p expected
 
-    calc = Calculator.new
-
-    valid_blocks += 1 if calc.try_all(registers, instructions, expected) > 3
+    valid_blocks += 1 if calc.try_all(registers, instructions, expected) >= 3
 end
+
 p "Valid blocks = #{valid_blocks}"
