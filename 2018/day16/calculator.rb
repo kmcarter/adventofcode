@@ -1,17 +1,41 @@
 class Calculator
+    attr_reader :operations
+    
+    def initialize
+        @all_opcodes = [ "addr", "addi", "mulr", "muli", "banr", "bani", "borr", "bori", "setr", "seti", "gtir", "gtri", "gtrr", "eqir", "eqri", "eqrr" ]
+        @opcodes = ["addi", "mulr", "muli", "borr", "bori", "gtir"]
+        #@operations = Array.new(16, nil)
+        @operations = ["bani", "addr", nil, nil, "gtri", "banr", nil, "eqri", "seti", "eqrr", nil, "setr", "eqir", nil, "gtrr", nil]
+    end
 
     def try_all(registers, inst, expected)
-        opcodes = [ "addr", "addi", "mulr", "muli", "banr", "bani", "borr", "bori", "setr", "seti", "gtir", "gtri", "gtrr", "eqir", "eqri", "eqrr" ]
-        num_different = 0
+        operation_matches = []
         
-        opcodes.each do |opcode|
+        #puts "Checking opcodes #{@opcodes}"
+        @opcodes.each do |opcode|
             result = public_send(opcode, registers, inst)
-            num_different += 1 if (result <=> expected) == 0
-            p "#{opcode}: #{result}"
+            if (result <=> expected) == 0
+                operation_matches << opcode
+            end
+            #p "#{opcode}: #{result}"
         end
 
-        p "# of different outcomes = #{num_different}"
-        num_different
+        #p "# of different outcomes = #{operation_matches.length}"
+        operation_matches
+    end
+
+    def match_operations(operation_matches, registers, inst, expected)
+        if operation_matches.length >= 2
+            p "Possible combos for opcode #{inst[0]}: #{operation_matches}"
+        elsif operation_matches.length == 1
+            @operations[inst[0]] = operation_matches[0]
+            @opcodes.delete(operation_matches[0])
+            #p "New operation found. #{operation_matches} == #{inst[0]}"
+        elsif operation_matches.length == 0
+            p "No matches!? Registers = #{registers}, instructions = #{inst}, expected = #{expected}"
+        else
+            #p "#{operation_matches.length} operations match"
+        end
     end
     
     def addr(registers, inst)
