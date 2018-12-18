@@ -2,20 +2,28 @@ class Forest
 
     def initialize(input)
         @map = input
+        @count_results = []
         print
     end
 
-    def count_trees
+    def count_trees(minute = nil)
         sum_trees = 0
         sum_lumberyards = 0
         @map.each {|row| sum_trees += row.count("|") }
         @map.each {|row| sum_lumberyards += row.count("#") }
-        p "Total: #{sum_trees} * #{sum_lumberyards} = #{sum_trees * sum_lumberyards}"
+        total = sum_trees * sum_lumberyards
+        p "Total for minute #{minute}: #{sum_trees} * #{sum_lumberyards} = #{total}"
+        #p "169472 appears at #{minute}" if total == 169472
+        #p "REPEATED VALUE at minute #{minute} (#{total})" if @count_results.index(total) != nil
+        #@count_results << total if @count_results.index(total) == nil
+        total
     end
 
     def transform(minutes)
         1.upto(minutes).each do |minute|
             next_minute
+            total = count_trees(minute)
+            #@count_results << total if minute < 4
         end
         #p "============================================="
         #print
