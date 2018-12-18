@@ -2,10 +2,10 @@ class Calculator
     attr_reader :operations
     
     def initialize
-        @all_opcodes = [ "addr", "addi", "mulr", "muli", "banr", "bani", "borr", "bori", "setr", "seti", "gtir", "gtri", "gtrr", "eqir", "eqri", "eqrr" ]
-        @opcodes = ["addi", "mulr", "muli", "borr", "bori", "gtir"]
-        #@operations = Array.new(16, nil)
-        @operations = ["bani", "addr", nil, nil, "gtri", "banr", nil, "eqri", "seti", "eqrr", nil, "setr", "eqir", nil, "gtrr", nil]
+        @opcodes = [ "addr", "addi", "mulr", "muli", "banr", "bani", "borr", "bori", "setr", "seti", "gtir", "gtri", "gtrr", "eqir", "eqri", "eqrr" ]
+        #@opcodes = ["addi", "mulr", "muli", "borr", "bori", "gtir"]
+        @operations = ["bani", "addr", "mulr", "addi", "gtri", "banr", "borr", "eqri", "seti", "eqrr", "bori", "setr", "eqir", "muli", "gtrr", "gtir"]
+        #@operations = ["bani", "addr", nil, nil, "gtri", "banr", nil, "eqri", "seti", "eqrr", nil, "setr", "eqir", nil, "gtrr", nil]
     end
 
     def try_all(registers, inst, expected)
@@ -24,18 +24,30 @@ class Calculator
         operation_matches
     end
 
-    def match_operations(operation_matches, registers, inst, expected)
-        if operation_matches.length >= 2
-            p "Possible combos for opcode #{inst[0]}: #{operation_matches}"
-        elsif operation_matches.length == 1
-            @operations[inst[0]] = operation_matches[0]
-            @opcodes.delete(operation_matches[0])
-            #p "New operation found. #{operation_matches} == #{inst[0]}"
-        elsif operation_matches.length == 0
-            p "No matches!? Registers = #{registers}, instructions = #{inst}, expected = #{expected}"
-        else
-            #p "#{operation_matches.length} operations match"
+    def match_operations(possible_matches)
+        possible_matches.each_with_index do |op, i|
+            if op.length == 1
+                @operations[i] = op[0]
+                break
+            end
         end
+        possible_matches.map! do |possibilities|
+            possibilities.select {|match| !@operations.include? match}
+        end
+        possible_matches.each_with_index {|op,i| puts "#{i}: #{op}" }
+        @operations
+    end
+
+    def match_operations2
+        found_val = nil
+        @operation_matches.each do |key, value|
+            if value.length == 1
+                @operations[value[0]] = key
+                found_val = value[0]
+                break
+            end
+        end
+        @operation_matches.each { |key, value| @operation_matches[key] = value.select {|i| i != found_val } }
     end
     
     def addr(registers, inst)
