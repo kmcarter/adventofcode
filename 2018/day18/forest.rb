@@ -10,7 +10,7 @@ class Forest
         sum_lumberyards = 0
         @map.each {|row| sum_trees += row.count("|") }
         @map.each {|row| sum_lumberyards += row.count("#") }
-        p "Total = #{sum_trees * sum_lumberyards}"
+        p "Total: #{sum_trees} * #{sum_lumberyards} = #{sum_trees * sum_lumberyards}"
     end
 
     def transform(minutes)
