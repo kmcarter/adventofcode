@@ -1,3 +1,5 @@
+require "./water.rb"
+
 spring = [500, 0]
 input = File.open("./example.txt").read.split("\n")
 input.map! {|line| line.split(", ")}
@@ -59,4 +61,8 @@ input.each do |coords|
     end
 end
 map[spring[1]][spring[0]-495] = "+"
+map.each {|row| p row.join }
+
+water = Water.new(map)
+water.move(500, 0)
 map.each {|row| p row.join }
