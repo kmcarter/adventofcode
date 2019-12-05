@@ -1,28 +1,44 @@
 from pathlib import Path
 
-input = Path('./2019/day02/input.txt')
-inputs = [line.strip().split(',') for line in input.open()]
-inst = [int(val) for val in inputs[0]]
-print(inst)
-#inst = [1,1,1,4,99,5,6,0,99]
 
-def process_opcode(opcode, input1_idx=None, input2_idx=None, output_idx=None):
+target = 19690720
+input_file = Path('./2019/day02/input.txt')
+program = [line.strip().split(',') for line in input_file.open()]
+program = [int(val) for val in program[0]]
+print(program)
+
+def process_opcode(pointer):
+    opcode = inst[pointer]
     if opcode == 99:
-        return False
-    elif opcode == 1:
-        inst[output_idx] = inst[input1_idx] + inst[input2_idx]
+        return 0
+
+    noun = inst[pointer+1]
+    verb = inst[pointer+2]
+    output_idx = inst[pointer+3]
+
+    if opcode == 1:
+        inst[output_idx] = inst[noun] + inst[verb]
     elif opcode == 2:
-        inst[output_idx] = inst[input1_idx] * inst[input2_idx]
+        inst[output_idx] = inst[noun] * inst[verb]
     else:
         print("oops")
-    return True
+    return pointer + 4
 
-inst[1] = 12
-inst[2] = 2
-current_opcode_idx = 0
-do_continue = process_opcode(*inst[current_opcode_idx:current_opcode_idx+4])
-print(inst)
-while do_continue:
-    current_opcode_idx += 4
-    do_continue = process_opcode(*inst[current_opcode_idx:current_opcode_idx+4])
-    print(inst)
+input = -1
+output = 0
+while output != target and input <= 9999:
+    input += 1
+    inst = program.copy()
+    inst[1] = input // 100
+    inst[2] = input % 100
+    print(f"Attempting noun {inst[1]} and verb {inst[2]}")
+    
+    instr_pointer = 0
+    instr_pointer = process_opcode(instr_pointer)
+    #print(inst)
+    while instr_pointer > 0:
+        instr_pointer = process_opcode(instr_pointer)
+    print(f"Final: {inst}")
+    output = inst[0]
+
+print(input)
